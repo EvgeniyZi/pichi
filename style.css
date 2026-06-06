@@ -1,0 +1,40 @@
+body {
+    box-sizing: border-box;
+    background-color: rgb(24, 24, 24);
+    color: rgb(196, 196, 196);
+}
+
+ul {
+    list-style: none;
+}
+
+.форма-сбора-данных-кормления {
+    border: 1px solid rgb(255, 174, 0);
+    padding: 10px;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    max-width: 350px;
+    background-color: #222;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.calendar__day {
+    background-color: #313131;
+    padding: 15px 0;
+    text-align: center;
+    color: #ccc;
+    border-radius: 4px;
+}
+
+.day-head {
+    background-color: #424242;
+}
+
+.calendar__day--active {
+    background-color: rgba(0, 128, 0, 0.397);
+}

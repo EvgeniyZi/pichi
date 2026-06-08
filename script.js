@@ -3,6 +3,8 @@
     const кнопкаУдалитьПоследнююЗапсиь = document.querySelector('.удалить-последнюю-запись');
     const полеВыводаСписка = document.querySelector('.feed-days-list');
     const список = document.querySelector('.лист_кормлений');
+    let текущийФокусКалендаря = new Date();
+
     let list = [];
 
     const данныеВХранилище = localStorage.getItem('feeding_pichi');
@@ -17,10 +19,17 @@
 
     кнопкаУдалитьПоследнююЗапсиь.addEventListener('click', () => удалитьПоследнююЗаписьМассива(list));
 
+    const кнопкаПредидущийМесяц = document.querySelector('.calendar__btn--prev');
+    кнопкаПредидущийМесяц.addEventListener('click', () => перелистнутьМесяцНазад());
+    
+    const кнопкаСледующийМесяц = document.querySelector('.calendar__btn--next');
+    кнопкаСледующийМесяц.addEventListener('click', () => перелистнутьМесяцВперёд());
+
     function удалитьПоследнююЗаписьМассива(arr) {
         const удалённыйОбъект = arr.pop();
         записатьДанныеВХранилище();
         обновитьДанныеВПоле();
+        перерисоватьКалендарь();
     }
 
     function дирижёр(event) {
@@ -60,9 +69,6 @@
         const сколькоСъел = формаКормления.количествоСъеденыхСверчков.valueAsNumber;
         const какиеВитамины = формаКормления.типВитамин.value;
         const дополнительноеОписание = формаКормления.описаниеТекущегоКормления.value;
-        console.log('сколькоСъел', сколькоСъел);
-        console.log('какиеВитамины', какиеВитамины);
-        console.log('дополнительноеОписание', дополнительноеОписание);
 
         const новыйОбъект = {
             id: моментВремени,
@@ -82,7 +88,7 @@
             const item = list[i];
             const liElement = document.createElement('li');
             liElement.classList.add(`list_${i}`);
-            liElement.textContent = `№${[i]} _ ${item.дата} в ${item.время} - Скушала: ${item.колличество} шт. (${item.витамины})`; 
+            liElement.textContent = `${item.дата} в ${item.время} - Скушала: ${item.колличество} шт. (${item.витамины})`; 
             список.append(liElement);
         }
     }
@@ -93,14 +99,23 @@
     }
 
     function перерисоватьКалендарь() {
-        const name = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+        const nameDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+        const nameMonths = [
+            'Январь', 'Февраль', 'Март', 'Апрел', 'Май', 'Июнь',
+            'Июль', 'Авгус', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+        ];
+
+        const фокус = получитьДанныеФокусаКалендаря();
+        document.querySelector('.calendar__year').textContent = фокус.год;
+        document.querySelector('.calendar__month-name').textContent = nameMonths[фокус.месяц];
+
         const calendarElement = document.querySelector('.calendar');
         calendarElement.innerHTML = '';
 
-        for (let i = 0; i < name.length; i += 1) {
+        for (let i = 0; i < nameDays.length; i += 1) {
             const divElement = document.createElement('div');
             divElement.classList.add('calendar__day', 'day-head');
-            divElement.textContent = `${name[i]}`;
+            divElement.textContent = `${nameDays[i]}`;
             calendarElement.appendChild(divElement);
         }
         
@@ -114,12 +129,14 @@
         }        
         
         const днейВМесяце = получитьКоличествоДнейТекущегоМесяца();
+        const всеДатыКормления = получитьТолькоДатыКормления();
         
         for (let i = 0; i < днейВМесяце; i += 1) {
             const divElement = document.createElement('div');
             const проверяемоеЧислоString = String(i + 1).padStart(2, '0');
+            const проверяемыйМесяцString = String(фокус.месяц + 1).padStart(2, '0');
             
-            const даИлиНет = получитьТолькоДатыКормления().some((дата) => дата === `2026-06-${проверяемоеЧислоString}`);
+            const даИлиНет = всеДатыКормления.includes(`${фокус.год}-${проверяемыйМесяцString}-${проверяемоеЧислоString}`);
 
             divElement.classList.add('calendar__day');
 
@@ -142,8 +159,6 @@
         return выборкаДат;
     }
 
-    console.log(получитьТолькоДатыКормления());
-
     function текущаяДата() {
         const year = new Date().getFullYear();
         const month = new Date().getMonth();
@@ -157,20 +172,39 @@
     }
 
     function получитьКоличествоДнейТекущегоМесяца() {
-        const дата = текущаяДата();
-        const количествоДней = new Date(дата.год, дата.месяц + 1, 0).getDate();
+        const фокус = получитьДанныеФокусаКалендаря();
+        const количествоДней = new Date(фокус.год, фокус.месяц + 1, 0).getDate();
         
         return количествоДней;
     }
     
     function получитьДеньНеделиПервогоЧислаМесца() {
-        const дата = текущаяДата();   
-        let деньНедели = new Date(дата.год, дата.месяц, 1).getDay();
+        const фокус = получитьДанныеФокусаКалендаря();   
+        let деньНедели = new Date(фокус.год, фокус.месяц, 1).getDay();
         if (деньНедели === 0) {
             деньНедели = 7;
         }
 
         return деньНедели;
+    }
+
+    function получитьДанныеФокусаКалендаря() {
+        return {
+            год: текущийФокусКалендаря.getFullYear(),
+            месяц: текущийФокусКалендаря.getMonth()
+        }
+    }
+
+    function перелистнутьМесяцВперёд() {
+        const следующийМесяц = текущийФокусКалендаря.getMonth() + 1;
+        текущийФокусКалендаря.setMonth(следующийМесяц);
+        перерисоватьКалендарь();
+    }
+
+    function перелистнутьМесяцНазад() {
+        const пердыдущийМесяц = текущийФокусКалендаря.getMonth() - 1;
+        текущийФокусКалендаря.setMonth(пердыдущийМесяц);
+        перерисоватьКалендарь();
     }
 
 

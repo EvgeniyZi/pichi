@@ -9,31 +9,26 @@
 <body>
     <form action="" name="формаСбораДанныхКормления" class="форма-сбора-данных-кормления">
         <label>
-            <p>Укажи количество съеденых сверчков</p>
+            <p>Укажи кол-во съеденых сверчков</p>
             <input type="number" name="количествоСъеденыхСверчков" placeholder="0" min="0" max="100" step="1" required>
         </label>
-        <br>
         <label>
-            <p>Какие витамины были во время кормления</p>
-            <input type="text" name="типВитамин" list="списокВитамин" placeholder="Начни вводить или выбери...">
+            <p>Витамины</p>
+            <input type="text" name="типВитамин" list="списокВитамин" placeholder="выбери...">
             <datalist id="списокВитамин">
                 <option value="без витаминов"></option>
-                <option value="D3"></option>
-                <option value="Calcium"></option>
+                <option value="D3/Calcium"></option>
+                <option value="Витамины"></option>
             </datalist>
         </label>
         <label>
-            <p>Дополнительное описание приёма пищи</p>
+            <p>Дополнительное описание</p>
             <textarea name="описаниеТекущегоКормления" id="" placeholder="Общее описание"></textarea>
         </label>
-        <br>
-        <br>
         <button class="add-day-btn" type="submit">Отметить день</button>
+        <button class="удалить-последнюю-запись">Удалить последнюю запись</button>
     </form>
-    <br>
     <button class="test">Test</button>
-    <br>
-    <button class="удалить-последнюю-запись">Удалить последнюю запись</button>
     <section class="info-section">
         <div class="calendar__header info-section__header">
             <span class="calendar__year">2026</span>

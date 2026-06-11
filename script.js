@@ -6,6 +6,7 @@
     let текущийФокусКалендаря = new Date();
 
     let list = [];
+    let выбраннаяДата = '';
 
     const данныеВХранилище = localStorage.getItem('feeding_pichi');
 
@@ -26,7 +27,20 @@
     кнопкаСледующийМесяц.addEventListener('click', () => перелистнутьМесяцВперёд());
 
     function удалитьПоследнююЗаписьМассива(arr) {
-        const удалённыйОбъект = arr.pop();
+        const objDelete = arr[arr.length - 1];
+        const isDelete = confirm(`
+            Удалить объект созданный ${objDelete.дата} в ${objDelete.время}. 
+            Съела ${objDelete.колличество} шт. ${objDelete.витамины}, 
+            ${objDelete.описание} 
+            `);
+
+        if (isDelete) {
+            const удалённыйОбъект = arr.pop();
+            console.log(`Запись "${удалённыйОбъект.дата} ${удалённыйОбъект.время}" удалена!`);
+        } else {
+            console.log(`Запись "${arr[arr.length - 1]}" не удалена`);
+        }
+
         записатьДанныеВХранилище();
         обновитьДанныеВПоле();
         перерисоватьКалендарь();
@@ -40,7 +54,6 @@
         записатьДанныеВХранилище();
         перерисоватьКалендарь();
         обновитьДанныеВПоле();
-        console.log(list);
     }
 
     function получитьДатуString(obj) {
@@ -84,18 +97,39 @@
         
     function обновитьДанныеВПоле() {
         список.innerHTML = '';
+        let нашлиЗапись = false;
+        const liElement = document.createElement('li');
+
         for (let i = 0; i < list.length; i += 1) {
             const item = list[i];
-            const liElement = document.createElement('li');
-            liElement.classList.add(`list_${i}`);
-            liElement.textContent = `${item.дата} в ${item.время} - Скушала: ${item.колличество} шт. (${item.витамины})`; 
-            список.append(liElement);
+            
+            if (item.дата === выбраннаяДата) {
+                нашлиЗапись = true;
+                console.log('нашлиЗапись =', нашлиЗапись);    
+                // liElement.classList.add(`list_${i}`);                
+                liElement.textContent = `${item.дата} в ${item.время} - Скушала: ${item.колличество} шт. (${item.витамины})`; 
+                список.append(liElement);
+            }
+            
+            if (нашлиЗапись === false) {
+                let выбраныйДень = выбраннаяДата;
+                console.log(выбраныйДень, выбраныйДень.length);
+
+                if (выбраныйДень.length > 0) {
+                    liElement.textContent = `Пичи ${выбраныйДень} не ела.`;
+                    список.append(liElement);
+                }
+            }
         }
     }
 
     function записатьДанныеВХранилище() {
         const строка = JSON.stringify(list);
         localStorage.setItem('feeding_pichi', строка);
+    }
+
+    function нарисоватьШапкуКалендаря() {
+        // !!!!!!!!!!!!!! Тут хочу создать отдельную функцию но надо продумать как.
     }
 
     function перерисоватьКалендарь() {
@@ -126,7 +160,7 @@
             divElement.classList.add('calendar__day');
             divElement.textContent = '';
             calendarElement.appendChild(divElement);
-        }        
+        }  
         
         const днейВМесяце = получитьКоличествоДнейТекущегоМесяца();
         const всеДатыКормления = получитьТолькоДатыКормления();
@@ -137,9 +171,14 @@
             const проверяемыйМесяцString = String(фокус.месяц + 1).padStart(2, '0');
             
             const даИлиНет = всеДатыКормления.includes(`${фокус.год}-${проверяемыйМесяцString}-${проверяемоеЧислоString}`);
-
+            
             divElement.classList.add('calendar__day');
-
+            
+            divElement.addEventListener('click', () => {
+                выбраннаяДата = `${фокус.год}-${проверяемыйМесяцString}-${проверяемоеЧислоString}`;
+                обновитьДанныеВПоле();
+            });
+            
             if (даИлиНет) {
                 divElement.classList.add('calendar__day--active');
             }
@@ -213,14 +252,18 @@
     testButton.addEventListener('click', () => test());
 
     function test() {
-        const текущийГод = new Date().getFullYear();
-        const текущийМесяц = new Date().getMonth();
-        console.log(`Текущий год ${текущийГод}`);
-        console.log(`Текущий месяц ${текущийМесяц + 1}`);
-        console.log(`кол-во дней текущего месяца: ${получитьКоличествоДнейТекущегоМесяца()}`);
+        let newArr = [...list];
+        console.log(newArr);
+        console.log(newArr[newArr.length - 1]);
+        let удалённыйОбъект = newArr.pop();
+        // const текущийГод = new Date().getFullYear();
+        // const текущийМесяц = new Date().getMonth();
+        // console.log(`Текущий год ${текущийГод}`);
+        // console.log(`Текущий месяц ${текущийМесяц + 1}`);
+        // console.log(`кол-во дней текущего месяца: ${получитьКоличествоДнейТекущегоМесяца()}`);
 
-        return получитьКоличествоДнейТекущегоМесяца();
+        // return получитьКоличествоДнейТекущегоМесяца();
+        console.log('удалённыйОбъект:', удалённыйОбъект);
+        return console.log(list[list.length - 1].дата);
     }
-
 }
-

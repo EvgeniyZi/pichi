@@ -259,7 +259,7 @@
     }
 
     function сохранитьРезервнуюКопиюФайла() {
-        const строка = JSON.stringify(list);
+        const строка = JSON.stringify(list, null, 2);
         const виртуальныйФайл = new Blob([строка], { type: `aplication/json` });
         const временнаяСсылка = URL.createObjectURL(виртуальныйФайл);
         const скрытаяСсылка = document.createElement('a');

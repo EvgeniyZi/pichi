@@ -26,6 +26,9 @@
     const кнопкаСледующийМесяц = document.querySelector('.calendar__btn--next');
     кнопкаСледующийМесяц.addEventListener('click', () => перелистнутьМесяцВперёд());
 
+    const кнопкаСохранитьВФайл = document.querySelector('.save-copy-file');
+    кнопкаСохранитьВФайл.addEventListener('click', () => сохранитьРезервнуюКопиюФайла());
+
     function удалитьПоследнююЗаписьМассива(arr) {
         const objDelete = arr[arr.length - 1];
         const isDelete = confirm(`
@@ -255,12 +258,19 @@
         перерисоватьКалендарь();
     }
 
-    // function сохранитьРезервнуюКопиюФайла() {
-    //     const saveBtn = document.querySelector('.save-copy-file');
-    //     saveBtn.addEventListener('click', () => {
-    //         const строка = JSON.stringify(list);
-    //     })
-    // }
+    function сохранитьРезервнуюКопиюФайла() {
+        const строка = JSON.stringify(list);
+        const виртуальныйФайл = new Blob([строка], { type: `aplication/json` });
+        const временнаяСсылка = URL.createObjectURL(виртуальныйФайл);
+        const скрытаяСсылка = document.createElement('a');
+
+        скрытаяСсылка.href = временнаяСсылка;
+        скрытаяСсылка.download = 'fedding_pichi_backup.json';
+
+        скрытаяСсылка.click();
+
+        URL.revokeObjectURL(временнаяСсылка);
+    }
 
 
     const testButton = document.querySelector('.test');

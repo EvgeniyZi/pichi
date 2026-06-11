@@ -29,6 +29,9 @@
     const кнопкаСохранитьВФайл = document.querySelector('.save-copy-file');
     кнопкаСохранитьВФайл.addEventListener('click', () => сохранитьРезервнуюКопиюФайла());
 
+    const полеЗагрузкиКопии = document.querySelector('.upload-backup-input');
+    полеЗагрузкиКопии.addEventListener('change', (e) => загрузитьДанныеИзФайла(e));
+
     function удалитьПоследнююЗаписьМассива(arr) {
         const objDelete = arr[arr.length - 1];
         const isDelete = confirm(`
@@ -270,6 +273,41 @@
         скрытаяСсылка.click();
 
         URL.revokeObjectURL(временнаяСсылка);
+    }
+
+    function загрузитьДанныеИзФайла(event) {
+        const файл = event.target.files[0];
+        console.log('файл:', файл);
+        if (!файл) return;
+        
+        const читатель = new FileReader();
+        console.log('читатель = new FileReader():', читатель);
+        читатель.readAsText(файл);
+        читатель.onload = function() {
+            try {
+                const загруженныйМассив = JSON.parse(читатель.result);
+
+                if (!Array.isArray(загруженныйМассив) || загруженныйМассив.length === 0) {
+                    alert('Файл повреждён или содержит неверные данные');
+                    return;
+                }
+
+                const последняяЗаписьВФайле = загруженныйМассив[загруженныйМассив.length - 1];
+                const последняяЗаписьВТекущемСписке = list[list.length - 1];
+
+                if (!последняяЗаписьВТекущемСписке || последняяЗаписьВФайле.id > последняяЗаписьВТекущемСписке.id) {
+                    list = загруженныйМассив;
+                    записатьДанныеВХранилище();
+                    перерисоватьКалендарь();
+                    обновитьДанныеВПоле();
+                    alert('Данные успешно обновлены из файла!');
+                } else {
+                    alert('В файле устаревшие данные. Обновление не требуется.')
+                }
+            } catch (ошибка) {
+                alert('Не удалось прочитать файл. Убедитесь, что выбрали правильный файл резервной копии.')
+            }
+        }
     }
 
 

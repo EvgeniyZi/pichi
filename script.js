@@ -124,64 +124,77 @@
         localStorage.setItem('feeding_pichi', строка);
     }
 
-    function нарисоватьШапкуКалендаря() {
-        // !!!!!!!!!!!!!! Тут хочу создать отдельную функцию но надо продумать как.
-    }
-
-    function перерисоватьКалендарь() {
+    function нарисоватьДниНедели(кудаРисовать) {
         const nameDays = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
-        const nameMonths = [
-            'Январь', 'Февраль', 'Март', 'Апрел', 'Май', 'Июнь',
-            'Июль', 'Авгус', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
-        ];
-
-        const фокус = получитьДанныеФокусаКалендаря();
-        document.querySelector('.calendar__year').textContent = фокус.год;
-        document.querySelector('.calendar__month-name').textContent = nameMonths[фокус.месяц];
-
-        const calendarElement = document.querySelector('.calendar');
-        calendarElement.innerHTML = '';
-
+        
         for (let i = 0; i < nameDays.length; i += 1) {
             const divElement = document.createElement('div');
             divElement.classList.add('calendar__day', 'day-head');
             divElement.textContent = `${nameDays[i]}`;
-            calendarElement.appendChild(divElement);
+            кудаРисовать.appendChild(divElement);
         }
-        
+    }
+
+    function нарисоватьПустыеЯчейкиКалендаря(кудаРисовать) {
         const деньНеделиПервоеЧисло = получитьДеньНеделиПервогоЧислаМесца();
         
         for (let i = 0; i < деньНеделиПервоеЧисло - 1; i += 1) {
             const divElement = document.createElement('div');
             divElement.classList.add('calendar__day');
             divElement.textContent = '';
-            calendarElement.appendChild(divElement);
-        }  
-        
+            кудаРисовать.appendChild(divElement);
+        }
+    }
+
+    function нарисоватьШапкуКалендаря(кудаРисоватьГод, кудаРисоватьМесяц, год, месяц) {
+        const nameMonths = [
+            'Январь', 'Февраль', 'Март', 'Апрел', 'Май', 'Июнь',
+            'Июль', 'Авгус', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+        ];
+
+        кудаРисоватьГод.textContent = год;
+        кудаРисоватьМесяц.textContent = nameMonths[месяц];
+    }
+
+    function нарисоватьЧислаКалендаря(кудаРисовать, проверяемыйГод, проверяемыйМесяц) {
         const днейВМесяце = получитьКоличествоДнейТекущегоМесяца();
         const всеДатыКормления = получитьТолькоДатыКормления();
         
         for (let i = 0; i < днейВМесяце; i += 1) {
             const divElement = document.createElement('div');
-            const проверяемоеЧислоString = String(i + 1).padStart(2, '0');
-            const проверяемыйМесяцString = String(фокус.месяц + 1).padStart(2, '0');
             
-            const даИлиНет = всеДатыКормления.includes(`${фокус.год}-${проверяемыйМесяцString}-${проверяемоеЧислоString}`);
+            const проверяемыйМесяцString = String(проверяемыйМесяц + 1).padStart(2, '0');
+            const проверяемоеЧислоString = String(i + 1).padStart(2, '0');
+            
+            const даИлиНет = всеДатыКормления.includes(`${проверяемыйГод}-${проверяемыйМесяцString}-${проверяемоеЧислоString}`);
             
             divElement.classList.add('calendar__day');
             
             divElement.addEventListener('click', () => {
-                выбраннаяДата = `${фокус.год}-${проверяемыйМесяцString}-${проверяемоеЧислоString}`;
+                выбраннаяДата = `${проверяемыйГод}-${проверяемыйМесяцString}-${проверяемоеЧислоString}`;
                 обновитьДанныеВПоле();
             });
             
             if (даИлиНет) {
                 divElement.classList.add('calendar__day--active');
             }
-
+            
             divElement.textContent = i + 1;
-            calendarElement.appendChild(divElement);
+            кудаРисовать.appendChild(divElement);
         }
+    }
+    
+    function перерисоватьКалендарь() {
+        const { год, месяц } = получитьДанныеФокусаКалендаря();
+        const годКалендаряElement = document.querySelector('.calendar__year');
+        const месяцКалендаряElement = document.querySelector('.calendar__month-name');
+        const calendarElement = document.querySelector('.calendar');
+        calendarElement.innerHTML = '';
+
+        нарисоватьШапкуКалендаря(годКалендаряElement, месяцКалендаряElement, год, месяц);
+        нарисоватьДниНедели(calendarElement);
+        нарисоватьПустыеЯчейкиКалендаря(calendarElement);
+        нарисоватьЧислаКалендаря(calendarElement, год, месяц);
     }
 
     function получитьТолькоДатыКормления() {

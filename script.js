@@ -97,30 +97,26 @@
         
     function обновитьДанныеВПоле() {
         список.innerHTML = '';
+
+        if (!выбраннаяДата) return;
+
+        let дляВыводаВСтроку = '';
         let нашлиЗапись = false;
-        const liElement = document.createElement('li');
 
         for (let i = 0; i < list.length; i += 1) {
             const item = list[i];
             
             if (item.дата === выбраннаяДата) {
                 нашлиЗапись = true;
-                console.log('нашлиЗапись =', нашлиЗапись);    
-                // liElement.classList.add(`list_${i}`);                
-                liElement.textContent = `${item.дата} в ${item.время} - Скушала: ${item.колличество} шт. (${item.витамины})`; 
-                список.append(liElement);
+                 дляВыводаВСтроку += `<li>${item.дата} в ${item.время} - Скушала: ${item.колличество} шт. (${item.витамины})</li>`;
+            }
             }
             
-            if (нашлиЗапись === false) {
-                let выбраныйДень = выбраннаяДата;
-                console.log(выбраныйДень, выбраныйДень.length);
-
-                if (выбраныйДень.length > 0) {
-                    liElement.textContent = `Пичи ${выбраныйДень} не ела.`;
-                    список.append(liElement);
-                }
-            }
+        if (!нашлиЗапись) {
+            дляВыводаВСтроку = `<li>Пичи ${выбраннаяДата} не ела.</li>`
         }
+
+        список.innerHTML = дляВыводаВСтроку;
     }
 
     function записатьДанныеВХранилище() {

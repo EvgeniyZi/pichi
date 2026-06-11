@@ -63,7 +63,7 @@
 
         return `${год}-${месяц}-${день}`;
     }
-    
+
     function получитьВремяString(obj) {
         const часы = String(obj.getHours()).padStart(2, '0');
         const минуты = String(obj.getMinutes()).padStart(2, '0');
@@ -94,7 +94,7 @@
 
         return новыйОбъект;
     }
-        
+
     function обновитьДанныеВПоле() {
         список.innerHTML = '';
 
@@ -183,7 +183,7 @@
             кудаРисовать.appendChild(divElement);
         }
     }
-    
+
     function перерисоватьКалендарь() {
         const { год, месяц } = получитьДанныеФокусаКалендаря();
         const годКалендаряElement = document.querySelector('.calendar__year');
@@ -225,7 +225,7 @@
         
         return количествоДней;
     }
-    
+
     function получитьДеньНеделиПервогоЧислаМесца() {
         const фокус = получитьДанныеФокусаКалендаря();   
         let деньНедели = new Date(фокус.год, фокус.месяц, 1).getDay();
@@ -254,6 +254,13 @@
         текущийФокусКалендаря.setMonth(пердыдущийМесяц);
         перерисоватьКалендарь();
     }
+
+    // function сохранитьРезервнуюКопиюФайла() {
+    //     const saveBtn = document.querySelector('.save-copy-file');
+    //     saveBtn.addEventListener('click', () => {
+    //         const строка = JSON.stringify(list);
+    //     })
+    // }
 
 
     const testButton = document.querySelector('.test');

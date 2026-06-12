@@ -7,27 +7,35 @@
     <title>Pichi</title>
 </head>
 <body>
-    <form action="" name="формаСбораДанныхКормления" class="форма-сбора-данных-кормления">
-        <label>
-            <p>Укажи кол-во съеденых сверчков</p>
-            <input type="number" name="количествоСъеденыхСверчков" placeholder="0" min="0" max="100" step="1" required>
-        </label>
-        <label>
-            <p>Витамины</p>
-            <input type="text" name="типВитамин" list="списокВитамин" placeholder="выбери...">
-            <datalist id="списокВитамин">
-                <option value="без витаминов"></option>
-                <option value="D3/Calcium"></option>
-                <option value="Витамины"></option>
-            </datalist>
-        </label>
-        <label>
-            <p>Дополнительное описание</p>
-            <textarea name="описаниеТекущегоКормления" id="" placeholder="Общее описание"></textarea>
-        </label>
-        <button class="add-day-btn" type="submit">Отметить день</button>
-        <button class="удалить-последнюю-запись">Удалить последнюю запись</button>
-    </form>
+    <div class="form-panel">
+        <button class="close-form-panel-btn">X</button>
+        <form action="" name="формаСбораДанныхКормления" class="форма-сбора-данных-кормления">
+            <label>
+                <p>Укажи кол-во съеденых сверчков</p>
+                <input type="number" name="количествоСъеденыхСверчков" placeholder="0" min="0" max="100" step="1" required>
+            </label>
+            <label>
+                <p>Витамины</p>
+                <input type="text" name="типВитамин" list="списокВитамин" placeholder="выбери...">
+                <datalist id="списокВитамин">
+                    <option value="без витаминов"></option>
+                    <option value="D3/Calcium"></option>
+                    <option value="Витамины"></option>
+                </datalist>
+            </label>
+            <label>
+                <p>Дополнительное описание</p>
+                <textarea name="описаниеТекущегоКормления" id="" placeholder="Общее описание"></textarea>
+            </label>
+            <button class="add-day-btn" type="submit">Отметить день</button>
+            <button class="удалить-последнюю-запись">Удалить последнюю запись</button>
+        </form>
+    </div>
+    <button class="burger-menu-btn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
     <button class="test">Test</button>
     <button class="save-copy-file">Сделать резервную копию</button>
     <input type="file" class="upload-backup-input" accept=".json">

@@ -3,8 +3,11 @@
     const кнопкаУдалитьПоследнююЗапсиь = document.querySelector('.удалить-последнюю-запись');
     const полеВыводаСписка = document.querySelector('.feed-days-list');
     const список = document.querySelector('.лист_кормлений');
-    let текущийФокусКалендаря = new Date();
+    const панельФормы = document.querySelector('.form-panel');
+    const кнопкаЗакрытияФормы = document.querySelector('.close-form-panel-btn');
+    const кнопкаОткрытияФормы = document.querySelector('.burger-menu-btn');
 
+    let текущийФокусКалендаря = new Date();
     let list = [];
     let выбраннаяДата = '';
 
@@ -15,6 +18,16 @@
         перерисоватьКалендарь();
         обновитьДанныеВПоле();
     };
+
+    кнопкаОткрытияФормы.addEventListener('click', () => {
+        панельФормы.classList.add('is-open');
+        console.log('Бургер-кнопка сработала, форма открылась');
+    })
+
+    кнопкаЗакрытияФормы.addEventListener('click', () => {
+        панельФормы.classList.remove('is-open');
+        console.log('кнопка сработала, панель должна закрыться.')
+    });
     
     кнопкаОтметитьДень.addEventListener('click', (e) => дирижёр(e));
 
@@ -170,20 +183,20 @@
         for (let i = 0; i < днейВМесяце; i += 1) {
             const divElement = document.createElement('div');
             
-            const проверяемыйМесяцString = String(проверяемыйМесяц + 1).padStart(2, '0');
-            const проверяемоеЧислоString = String(i + 1).padStart(2, '0');
+            const месяцДвузначный = String(проверяемыйМесяц + 1).padStart(2, '0');
+            const деньДвузначный = String(i + 1).padStart(2, '0');
             
-            const былПриёмПищи = всеДатыКормления.includes(`${проверяемыйГод}-${проверяемыйМесяцString}-${проверяемоеЧислоString}`);
-            const проверкаНаТекущееЧисло = `${год}-${String(месяц + 1).padStart(2, '0')}-${String(число).padStart(2, '0')}` === `${проверяемыйГод}-${проверяемыйМесяцString}-${i + 1}`;
+            const былПриёмПищи = всеДатыКормления.includes(`${проверяемыйГод}-${месяцДвузначный}-${деньДвузначный}`);
+            const этоСегодняшнийДень = `${год}-${String(месяц + 1).padStart(2, '0')}-${String(число).padStart(2, '0')}` === `${проверяемыйГод}-${месяцДвузначный}-${деньДвузначный}`;
 
             divElement.classList.add('calendar__day');
 
-            if (проверкаНаТекущееЧисло) {
+            if (этоСегодняшнийДень) {
                 divElement.classList.add('calendar__day--today');
             }
             
             divElement.addEventListener('click', () => {
-                выбраннаяДата = `${проверяемыйГод}-${проверяемыйМесяцString}-${проверяемоеЧислоString}`;
+                выбраннаяДата = `${проверяемыйГод}-${месяцДвузначный}-${деньДвузначный}`;
                 обновитьДанныеВПоле();
             });
             
@@ -326,13 +339,7 @@
         console.log(newArr);
         console.log(newArr[newArr.length - 1]);
         let удалённыйОбъект = newArr.pop();
-        // const текущийГод = new Date().getFullYear();
-        // const текущийМесяц = new Date().getMonth();
-        // console.log(`Текущий год ${текущийГод}`);
-        // console.log(`Текущий месяц ${текущийМесяц + 1}`);
-        // console.log(`кол-во дней текущего месяца: ${получитьКоличествоДнейТекущегоМесяца()}`);
 
-        // return получитьКоличествоДнейТекущегоМесяца();
         console.log('удалённыйОбъект:', удалённыйОбъект);
         return console.log(list[list.length - 1].дата);
     }

@@ -165,6 +165,7 @@
     function нарисоватьЧислаКалендаря(кудаРисовать, проверяемыйГод, проверяемыйМесяц) {
         const днейВМесяце = получитьКоличествоДнейТекущегоМесяца();
         const всеДатыКормления = получитьТолькоДатыКормления();
+        const { год, месяц, число } = текущаяДата();
         
         for (let i = 0; i < днейВМесяце; i += 1) {
             const divElement = document.createElement('div');
@@ -172,16 +173,21 @@
             const проверяемыйМесяцString = String(проверяемыйМесяц + 1).padStart(2, '0');
             const проверяемоеЧислоString = String(i + 1).padStart(2, '0');
             
-            const даИлиНет = всеДатыКормления.includes(`${проверяемыйГод}-${проверяемыйМесяцString}-${проверяемоеЧислоString}`);
-            
+            const былПриёмПищи = всеДатыКормления.includes(`${проверяемыйГод}-${проверяемыйМесяцString}-${проверяемоеЧислоString}`);
+            const проверкаНаТекущееЧисло = `${год}-${String(месяц + 1).padStart(2, '0')}-${String(число).padStart(2, '0')}` === `${проверяемыйГод}-${проверяемыйМесяцString}-${i + 1}`;
+
             divElement.classList.add('calendar__day');
+
+            if (проверкаНаТекущееЧисло) {
+                divElement.classList.add('calendar__day--today');
+            }
             
             divElement.addEventListener('click', () => {
                 выбраннаяДата = `${проверяемыйГод}-${проверяемыйМесяцString}-${проверяемоеЧислоString}`;
                 обновитьДанныеВПоле();
             });
             
-            if (даИлиНет) {
+            if (былПриёмПищи) {
                 divElement.classList.add('calendar__day--active');
             }
             

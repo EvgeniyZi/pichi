@@ -5,7 +5,10 @@
     const список = document.querySelector('.лист_кормлений');
     const панельФормы = document.querySelector('.form-panel');
     const кнопкаЗакрытияФормы = document.querySelector('.close-form-panel-btn');
-    const кнопкаОткрытияФормы = document.querySelector('.burger-menu-btn');
+    const кнопкаОткрытияФормы = document.querySelector('.open-form-btn');
+    const кнопкаОткрытияПанелиИнструментов = document.querySelector('.tools-panel-btn');
+    const панельИнструментов = document.querySelector('.tools-panel');
+    const кнопкаЗакрытияПанелиИнструментов = document.querySelector('.tools-panel__close-btn');
 
     let текущийФокусКалендаря = new Date();
     let list = [];
@@ -25,9 +28,19 @@
     })
 
     кнопкаЗакрытияФормы.addEventListener('click', () => {
-        панельФормы.classList.remove('is-open');
+        закрытьФорму();
         console.log('кнопка сработала, панель должна закрыться.')
     });
+    
+    кнопкаОткрытияПанелиИнструментов.addEventListener('click', () => {
+        панельИнструментов.classList.add('is-open');
+        console.log('Кнопка открытия панели инструментов нажата');
+    });
+
+    кнопкаЗакрытияПанелиИнструментов.addEventListener('click', () => {
+        панельИнструментов.classList.remove('is-open');
+        console.log('панель инструментов закрылась');
+    })
     
     кнопкаОтметитьДень.addEventListener('click', (e) => дирижёр(e));
 
@@ -73,6 +86,7 @@
         записатьДанныеВХранилище();
         перерисоватьКалендарь();
         обновитьДанныеВПоле();
+        закрытьФорму();
     }
 
     function получитьДатуString(obj) {
@@ -141,6 +155,10 @@
     function записатьДанныеВХранилище() {
         const строка = JSON.stringify(list);
         localStorage.setItem('feeding_pichi', строка);
+    }
+    
+    function закрытьФорму() {
+        панельФормы.classList.remove('is-open');
     }
 
     function нарисоватьДниНедели(кудаРисовать) {
@@ -327,20 +345,5 @@
                 alert('Не удалось прочитать файл. Убедитесь, что выбрали правильный файл резервной копии.')
             }
         }
-    }
-
-
-    const testButton = document.querySelector('.test');
-
-    testButton.addEventListener('click', () => test());
-
-    function test() {
-        let newArr = [...list];
-        console.log(newArr);
-        console.log(newArr[newArr.length - 1]);
-        let удалённыйОбъект = newArr.pop();
-
-        console.log('удалённыйОбъект:', удалённыйОбъект);
-        return console.log(list[list.length - 1].дата);
     }
 }

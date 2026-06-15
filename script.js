@@ -300,12 +300,12 @@
 
     function сохранитьРезервнуюКопиюФайла() {
         const строка = JSON.stringify(list, null, 2);
-        const виртуальныйФайл = new Blob([строка], { type: `aplication/json` });
+        const виртуальныйФайл = new Blob([строка], { type: `application/json` });
         const временнаяСсылка = URL.createObjectURL(виртуальныйФайл);
         const скрытаяСсылка = document.createElement('a');
 
         скрытаяСсылка.href = временнаяСсылка;
-        скрытаяСсылка.download = 'fedding_pichi_backup.json';
+        скрытаяСсылка.download = 'feedding_pichi_backup.json';
 
         скрытаяСсылка.click();
 

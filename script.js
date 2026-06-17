@@ -551,6 +551,7 @@
     const файл = event.target.files[0];
     console.log("файл:", файл);
     if (!файл) return;
+    event.target.value = "";
 
     const читатель = new FileReader();
     console.log("читатель = new FileReader():", читатель);

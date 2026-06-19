@@ -376,3 +376,8 @@ textarea {
 .calendar__day--active:hover {
     background-color: rgba(1, 181, 1, 0.397);
 }
+
+.calendar__day--selected {
+    outline: 2px solid orange;
+    outline-offset: -2px;
+}

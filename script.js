@@ -435,6 +435,8 @@
         `${год}-${String(месяц + 1).padStart(2, "0")}-${String(число).padStart(2, "0")}` ===
         `${проверяемыйГод}-${месяцДвузначный}-${деньДвузначный}`;
 
+      const этаДатаВыбрана = `${проверяемыйГод}-${месяцДвузначный}-${деньДвузначный}` === выбраннаяДата;
+
       divElement.classList.add("calendar__day");
 
       if (этоСегодняшнийДень) {
@@ -444,10 +446,15 @@
       divElement.addEventListener("click", () => {
         выбраннаяДата = `${проверяемыйГод}-${месяцДвузначный}-${деньДвузначный}`;
         обновитьДанныеВПоле();
+        перерисоватьКалендарь();
       });
 
       if (былПриёмПищи) {
         divElement.classList.add("calendar__day--active");
+      }
+
+      if (этаДатаВыбрана) {
+        divElement.classList.add("calendar__day--selected");
       }
 
       divElement.textContent = i + 1;

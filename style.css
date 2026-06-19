@@ -24,6 +24,12 @@ body {
     gap: 10px;
 }
 
+.wrapper {
+    width: 90vw;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
 p {
     margin: 0;
     padding: 0;
@@ -72,10 +78,11 @@ ul {
 .navigation {
     display: flex;
     flex-direction: row;
-    width: 350px;
+    /* width: 350px; */
     justify-content: space-around;
     align-items: center;
-    margin: 10px auto;
+    /* margin: 0 auto; */
+    column-gap: 2rem;
 }
 
 .navigation button {
@@ -295,7 +302,7 @@ textarea {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    width: 350px;
+    /* width: 350px; */
     padding: 20px 10px 10px 10px;
     border-radius: 8px 8px 0 0;
     background-color: #222;
@@ -329,7 +336,8 @@ textarea {
     margin: 0 auto;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
-    width: 350px;
+    width: 90vw;
+    max-width: 350px;
     background-color: #222;
     padding: 10px;
     border-radius: 0 0 8px 8px;
@@ -382,7 +390,7 @@ textarea {
     outline-offset: -2px;
 }
 
-.лист_кормлений {
+.feed-days-list {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -392,7 +400,8 @@ textarea {
     /* border: 3px solid rgb(65, 64, 64); */
     box-shadow: 0 0 3px 3px rgba(182, 182, 182, 0.192);
     min-height: 30px;
-    min-width: 350px;
+    /* width: 90vw;
+    max-width: 350px; */
     color: #288b00;
     text-align: center;
 }

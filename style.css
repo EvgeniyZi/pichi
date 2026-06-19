@@ -391,6 +391,8 @@ textarea {
     background-color: #141414;
     /* border: 3px solid rgb(65, 64, 64); */
     box-shadow: 0 0 3px 3px rgba(182, 182, 182, 0.192);
+    min-height: 30px;
+    min-width: 350px;
     color: #288b00;
     text-align: center;
 }

@@ -21,7 +21,7 @@ body {
     background-color: rgb(24, 24, 24);
     color: rgb(196, 196, 196);
     font-size: 1rem;
-    /* gap: 10px; */
+    gap: 10px;
 }
 
 p {
@@ -380,4 +380,17 @@ textarea {
 .calendar__day--selected {
     outline: 2px solid orange;
     outline-offset: -2px;
+}
+
+.лист_кормлений {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    margin: 5px;
+    background-color: #141414;
+    /* border: 3px solid rgb(65, 64, 64); */
+    box-shadow: 0 0 3px 3px rgba(182, 182, 182, 0.192);
+    color: #288b00;
+    text-align: center;
 }

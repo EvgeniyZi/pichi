@@ -52,8 +52,13 @@
     <div class="tools-panel" >
         <button class="tools-panel__close-btn">X</button>
         <!-- <button class="test">Test</button> -->
-        <button class="save-copy-file">Сделать резервную копию</button>
-        <input type="file" class="upload-backup-input" accept=".json">
+        <button class="save-copy-file">Сделать резервную копию в файл</button>
+        <label>
+            <p>Действие с данными из файла</p>
+            <input type="file" class="upload-backup-input" accept=".json">
+            <button class="merge-data-files-localStorage">Объединить данные из файла с локальным хранилищем</button>
+            <button class="save-data-files-to-localStorage">Заменить данными из файла в локальном хранилище</button>
+        </label>
         <div class="tools-panel__status-log">Система готова!</div>
     </div>
     <section class="info-section wrapper">

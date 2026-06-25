@@ -19,18 +19,33 @@
   const кнопкаСледующийМесяц = document.querySelector(".calendar__btn--next");
   const кнопкаСохранитьВФайл = document.querySelector(".save-copy-file");
   const полеЗагрузкиКопии = document.querySelector(".upload-backup-input");
+  const кнопкаСлияния = document.querySelector(".merge-data-files-localStorage");
+  const кнопкаЗатиранияЛокальныхДанныхИзФайла = document.querySelector(".save-data-files-to-localStorage");
 
   const данныеВЛокальномХранилищеЕсть = localStorage.getItem("feeding_pichi");
 
   let текущийФокусКалендаря = new Date();
   let list = [];
   let выбраннаяДата = "";
+  let режимЗагрузкиФайла = "";
 
   if (данныеВЛокальномХранилищеЕсть) {
     list = JSON.parse(данныеВЛокальномХранилищеЕсть);
     обновитьДанныеВПоле();
   }
   перерисоватьКалендарь();
+
+  кнопкаСлияния.addEventListener("click", () => {
+    режимЗагрузкиФайла = "слияние";
+    console.log(режимЗагрузкиФайла);
+    полеЗагрузкиКопии.click();
+  });
+
+  кнопкаЗатиранияЛокальныхДанныхИзФайла.addEventListener("click", () => {
+    режимЗагрузкиФайла = "затирание";
+    console.log(режимЗагрузкиФайла);
+    полеЗагрузкиКопии.click();
+  });
 
   кнопкаОткрытияФормы.addEventListener("click", () => {
     панельФормы.classList.add("is-open");
@@ -392,12 +407,23 @@
           return;
         }
 
+        if (режимЗагрузкиФайла === "затирание") {
+          list = массивИзФайла;
+          записатьДанныеВХранилище();
+          перерисоватьКалендарь();
+          обновитьДанныеВПоле();
+          вывестиВТерминал(
+            `База полностью заменена данными из файла!`
+          )
+          return
+        }
+
         const общийМассив = [...локальныйМассивДоСлияния, ...массивИзФайла];
         const очищенныйМассив = общийМассив.filter(
           (el, index) =>
             общийМассив.findIndex((item) => item.id === el.id) === index,
         );
-
+  
         очищенныйМассив.sort((a, b) => a.id - b.id);
 
         const прилетелоИзФайла =
@@ -433,6 +459,7 @@
       }
     };
   }
+
 
   function вывестиВТерминал(текстСообщения, типЛога) {
     терминал.textContent = `${текстСообщения}`;

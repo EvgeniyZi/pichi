@@ -3,12 +3,12 @@
     "short_name":"Pichi",
     "icons": [
         {
-            "src":"/icons/favicon-192x192.png?v=1",
+            "src":"favicon-192x192.png?v=1",
             "sizes":"192x192",
             "type":"image/png"
         },
         {
-            "src":"/icons/favicon-512x512.png?v=1",
+            "src":"favicon-512x512.png?v=1",
             "sizes":"512x512",
             "type":"image/png"
         }
